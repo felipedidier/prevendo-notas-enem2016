@@ -23,4 +23,4 @@ No arquivo train.csv será criado um modelo para prever nota da prova de matemá
 
 Será utilizado Python 3.
 
-**Arquivo principal**: **modelagemPythonFINAL.ipynb**
+**Arquivo principal**: modelagemPythonFINAL.ipynb
