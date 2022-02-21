@@ -1,17 +1,28 @@
 # Descobrindo as melhores notas de matemática do ENEM 2016
 
-Será criado um modelo para prever a nota da prova de matemática de quem participou do ENEM 2016. 
+Projeto final do curso de Data Science da [Awari](https://awari.com.br/).
+O objetivo desse projeto é realizar todos os passos importantes de uma trilha de Data Science.
+Será criado um modelo para prever a nota da prova de matemática de quem participou do ENEM 2016.
 
 ## Tópicos
 
-Neste projeto será analisado:
+- Ambiente
+- Dataset
+- Problemática
+- Código
+-- Coleta e importação de dados
+-- Preparação dos dados
+-- Análise exploratória
+-- Modelagem
 
-- Lógica
-- Análise de dados
-- Estatística
-- Regression
+
+## Ambiente
+
+O código do projeto foi implementado majoritariamente em Python 3 no ambiente do Google Colab.
+
 
 ## Detalhes
+
 
 O contexto do desafio gira em torno dos resultados do ENEM 2016 (disponíveis no arquivo train.csv). Este arquivo, e apenas ele, deve ser utilizado para todos os desafios. Qualquer dúvida a respeito das colunas, consulte o [Dicionário dos Microdados do Enem 2016](https://s3-us-west-1.amazonaws.com/acceleration-assets-highway/data-science/dicionario-de-dados.zip).
 
