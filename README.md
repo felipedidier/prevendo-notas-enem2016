@@ -25,6 +25,10 @@ Será criado um modelo para prever a nota da prova de matemática de quem partic
 O código do projeto foi implementado majoritariamente em Python 3 no ambiente do Google Colab.
 
 
+## Dataset
+
+O projeto utilizará o [dataset](https://raw.githubusercontent.com/felipedidier/prevendo-notas-enem2016/master/train.csv) do Desafio de Resultados do ENEM 2016.  gira em torno dos Resultados do ENEM 2016 (disponíveis no arquivo train.csv). Este arquivo, e apenas ele, deve ser utilizado para todos os desafios.
+
 ## Detalhes
 
 
