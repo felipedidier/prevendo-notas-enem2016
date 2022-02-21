@@ -3,7 +3,7 @@
 
 Projeto final do curso de Data Science da [Awari](https://awari.com.br/). O objetivo desse projeto é realizar todos os passos importantes de uma trilha de Data Science.
 
-Será criado um modelo de **previsão da nota da prova matemática de quem participou do ENEM 2016**.
+Será criado um modelo de **previsão da nota da prova matemática de quem participou do ENEM 2016 :pen**.
 
 
 ## Tópicos
