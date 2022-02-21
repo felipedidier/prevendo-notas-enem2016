@@ -19,6 +19,9 @@ Muitas universidades brasileiras utilizam o ENEM para selecionar seus futuros al
 
 No arquivo train.csv será criado um modelo para prever nota da prova de matemática (coluna **NU_NOTA_MT**) de quem participou do ENEM 2016. 
 
+```
+# Isto está formatado como código
+```
 ## Observações
 
 Será utilizado Python 3.
