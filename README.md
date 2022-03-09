@@ -10,7 +10,7 @@ Será criado um modelo de **previsão da nota da prova matemática de quem parti
 ## Tópicos
 
 
-- [Ambiente](Ambiente)
+- [Ambiente](#ambiente)
 - Dataset
 - Problemática
 - Código
