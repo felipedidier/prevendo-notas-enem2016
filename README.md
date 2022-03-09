@@ -1,10 +1,11 @@
 # Projeto: Prevendo as notas de matemática do ENEM
-<img src="https://img.shields.io/badge/build-completed-brightgreen"/>
+<img src="https://img.shields.io/badge/build-passing-brightgreen"/>
 
-<p align="justify">Projeto final do curso de Data Science da [Awari](https://awari.com.br/). O objetivo desse projeto é realizar todos os passos importantes de uma trilha de Data Science.
+Projeto final do curso de Data Science da [Awari](https://awari.com.br/). O objetivo desse projeto é realizar todos os passos importantes de uma trilha de Data Science.
 
-Será criado um modelo de **previsão da nota da prova matemática de quem participou do ENEM 2016 📔🖊**.</p>
+Será criado um modelo de **previsão da nota da prova matemática de quem participou do ENEM 2016 📔🖊**.
 
+> teste
 
 ## Tópicos
 
