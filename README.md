@@ -42,7 +42,20 @@ No arquivo train.csv será criado um modelo para prever nota da prova de matemá
 
 ## Código
 
-### Bibliotecas
+### Aquisição de dados
+
+Como dito [anteriormente](#dataset), os dados foram coletados a partir de um dataset já existente do Desafio de Resultados do ENEM 2016. Para coletar os dados do arquivo .CSV foi utilizada a biblioteca pandas, que estrutura os dados de forma tabular em linhas e colunas, o DataFrame.
+
+```python
+#Bibliotecas utilizadas
+import pandas as pd
+
+# Conversão .CSV para DataFrame
+df = pd.read_csv('https://raw.githubusercontent.com/felipedidier/prevendo-notas-enem2016/master/train.csv',encoding='utf-8-sig')
+```
+
+
+
 
 Diante da necessidade de manipulação, limpeza e visualização de dados, as bibliotecas abaixo foram importadas:
 
