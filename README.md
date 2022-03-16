@@ -159,11 +159,12 @@ df2['NU_IDADE'].value_counts().index.sort_values()[0] # 33
 
 Devido a participação dos dados (5,8%), os outliers não foram removidos por representar um valor já significante dos dados.
 
-Por fim, monta-se um heatmap prévio para visualizar a correlação entre as variáveis do tipo numéricas existentes.
+Por fim, monta-se um heatmap prévio para visualizar a correlação entre as colunas do tipo numéricas existentes. De inicio, vê-se que as únicas correlações interessantes com ```NU_NOTAS_MT``` são as demais colunas ```NU_NOTAS```.
 
 ```python
 sns.heatmap(df.corr())
 ```
+![heatmap1](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/heatmap_pre.png?raw=true)
 
 ### 3. Feature Engineering
 
@@ -198,16 +199,35 @@ feat_cat1 = ['TP_SEXO', 'Q006', 'Q007', 'Q008', 'Q009', 'Q010', 'Q011', 'Q012', 
 feat_cat2 = ['SG_UF_RESIDENCIA', 'TP_ESTADO_CIVIL', 'TP_COR_RACA', 'TP_NACIONALIDADE', 'TP_ST_CONCLUSAO']
 ```
 
-#### Variáveis Númericas
-
-Para as variáveis numéricas, será utilizada a transformação Z-scale.
-
-
-Diante da necessidade de manipulação, limpeza e visualização de dados, as bibliotecas abaixo foram importadas:
+Para esse momento, serão utilizados alguns métodos da biblioteca sklearn e category_encoders.
 
 ```python
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from category_encoders import OrdinalEncoder 
 ```
+
+#### Variáveis Númericas
+
+Para as variáveis numéricas, será utilizada a transformação Standard Scaler (Z-scale).
+
+```python
+z_score = StandardScaler()
+def std_z_scale(df,col):
+  df[col] = z_score.fit_transform(df[[col]])
+
+for col in feat_num:
+  std_z_scale(train, col)
+  std_z_scale(test, col)
+```
+
+Após transformação, os resultados obtidos foram:
+
+```python
+fig, axes = plt.subplots(nrows = 3, ncols = 2)
+fig.set_size_inches(20,20)
+
+for i, col in enumerate(feat_num):
+  sns.histplot(train[col], ax = axes[i//2,i%2], bins= 10, stat='density', kde=True)
+```
+
+
