@@ -179,10 +179,8 @@ X_test, y_test = test.drop(columns="NU_NOTA_MT"), test["NU_NOTA_MT"]
 ```
 As grandezas de cada DataFrame:
 ```
-X_train: (7824, 41)
-y_train: (7824,)
-X_test: (1957, 41)
-y_test: (1957,)
+train: (7824, 42)
+test: (1957, 42)
 ```
 
 #### Transformação de features
@@ -229,5 +227,55 @@ fig.set_size_inches(20,20)
 for i, col in enumerate(feat_num):
   sns.histplot(train[col], ax = axes[i//2,i%2], bins= 10, stat='density', kde=True)
 ```
+![histograma2](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/histplot2.png?raw=true)
 
+#### Variáveis Categóricas
 
+Devido o formato dos dados, serão adotados modelos de transformações distintos para atender cada feature. Serão utilizadas as transformações OneHot Encoder e Ordinal Encoder.
+
+Para as features do grupo ```feat_cat1```, será utilizada a transformação Ordinal Encoder, que substituirá os dados alfabéticos por valores numéricos.
+
+```python
+## Ordinal Encoder
+oe = OrdinalEncoder()
+
+maplist = [{'mapping': {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,'J':10,'K':11,'L':12,'M':13,'N':14,'O':15,'P':16,'Q':17}}]
+
+def ordinal_encoder(df):
+  df[feat_cat1] = oe.fit_transform(df[feat_cat1])
+  
+ordinal_encoder(train)
+ordinal_encoder(test)
+```
+
+Para as features do grupo ```feat_cat2```, será utilizada a transformação OneHot Encoder, que para cada valor distinto de cada feature criará uma nova feature com valores binários.
+
+```python
+## OneHot Encoder
+one_hot = OneHotEncoder()
+
+## train
+for col in feat_cat2:
+  temp = pd.DataFrame(one_hot.fit_transform(train[[col]]).toarray(),columns=one_hot.get_feature_names([col]))
+  train = train.drop(columns=col).join(temp)
+
+## test
+for col in feat_cat2:
+  temp = pd.DataFrame(one_hot.fit_transform(test[[col]]).toarray(),columns=one_hot.get_feature_names([col]))
+  test = test.drop(columns=col).join(temp)
+```
+
+As grandezas de cada DataFrame:
+```
+train: (7824, 83)
+test: (1957, 83)
+```
+
+Após a transformação 
+
+```python
+plt.figure(figsize=(20,20))
+sns.heatmap(train.corr())
+```
+
+![]()
