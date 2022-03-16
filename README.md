@@ -159,6 +159,12 @@ df2['NU_IDADE'].value_counts().index.sort_values()[0] # 33
 
 Devido a participação dos dados (5,8%), os outliers não foram removidos por representar um valor já significante dos dados.
 
+Por fim, monta-se um heatmap prévio para visualizar a correlação entre as variáveis do tipo numéricas existentes.
+
+```python
+sns.heatmap(df.corr())
+```
+
 ### 3. Feature Engineering
 
 #### Treino e Teste
@@ -177,6 +183,25 @@ y_train: (7824,)
 X_test: (1957, 41)
 y_test: (1957,)
 ```
+
+#### Transformação de features
+
+As features serão agrupadas em 03 grupos:
+
+- Variáveis numéricas ```feat_num```: a transformação dessas variáveis será realizada com Z-scale;
+- Variáveis categóricas ```feat_cat1```: a transformação dessas variáveis será realizada com Ordinal Enconder;
+- Variáveis categóricas ```feat_cat2```: a transformação dessas variáveis será realizada com OneHot Enconder.
+
+```python
+feat_num = ['NU_IDADE', 'NU_NOTA_MT', 'NU_NOTA_CN', 'NU_NOTA_CH', 'NU_NOTA_LC']
+feat_cat1 = ['TP_SEXO', 'Q006', 'Q007', 'Q008', 'Q009', 'Q010', 'Q011', 'Q012', 'Q013', 'Q014', 'Q015', 'Q016', 'Q017', 'Q018', 'Q019', 'Q020', 'Q021', 'Q022', 'Q023', 'Q024', 'Q025', 'Q026', 'Q042', 'Q043', 'Q045', 'Q047', 'Q048']
+feat_cat2 = ['SG_UF_RESIDENCIA', 'TP_ESTADO_CIVIL', 'TP_COR_RACA', 'TP_NACIONALIDADE', 'TP_ST_CONCLUSAO']
+```
+
+#### Variáveis Númericas
+
+Para as variáveis numéricas, será utilizada a transformação Z-scale.
+
 
 Diante da necessidade de manipulação, limpeza e visualização de dados, as bibliotecas abaixo foram importadas:
 
