@@ -134,13 +134,47 @@ fig.set_size_inches(20,50)
 for i, col in enumerate(selected_feat_eda):
   sns.histplot(df[col], ax = axes[i//5,i%5], bins= 10, stat='density', kde=True)
 ```
-
 ![histograma](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/histograma.png?raw=true)
 
 Nota-se a presença de muitas variáveis categóricas no dataset. Analisando os gráficos, chama a atenção a distribuição assimétrica da feature ```NU_IDADE``` que representa a idade dos participantes. Para esse caso em específico, é realizada uma análise mais aprofundada utilizando boxplot.
 
 ```python
 sns.boxplot(df['NU_IDADE'])
+```
+![boxplot](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/boxplot.png?raw=true)
+
+Nota-se no boxplot a presença de alguns outliers que serão analisados.
+Os outliers, utilizando o método ```z_socre```, representam todos os participantes com idade igual ou acima de 33 anos, o equivalente a 570 registros de dados (5,8% dos registros totais).
+
+```python
+def z_score_remove(df,col):
+  z = np.abs(stats.zscore(df[col]))
+  return df[(z < 2)], df[(z >= 2)]
+  
+df1, df2 = z_score_remove(df, 'NU_IDADE')
+df2.shape # (570, 43)
+df2['NU_IDADE'].value_counts().index.sort_values()[0] # 33
+```
+
+Devido a participação dos dados (5,8%), os outliers não foram removidos por representar um valor já significante dos dados.
+
+### Feature Engineering
+
+#### Treino e Teste
+
+É realizada a separação dos dados em treino e teste. Foi escolhida a proporção de 80/20, onde 80% da base será treino e 20% será teste.
+
+```python
+train, test = train_test_split(df, test_size=0.2, random_state=42)
+X_train, y_train = train.drop(columns="NU_NOTA_MT"), train["NU_NOTA_MT"]
+X_test, y_test = test.drop(columns="NU_NOTA_MT"), test["NU_NOTA_MT"]
+```
+As grandezas de cada DataFrame:
+```
+X_train: (7853, 43)
+y_train: (7853,)
+X_test: (1964, 43)
+y_test: (1964,)
 ```
 
 Diante da necessidade de manipulação, limpeza e visualização de dados, as bibliotecas abaixo foram importadas:
