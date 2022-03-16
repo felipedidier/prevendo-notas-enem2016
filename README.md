@@ -46,7 +46,7 @@ No arquivo train.csv será criado um modelo para prever nota da prova de matemá
 
 Diante da necessidade de manipulação, limpeza e visualização de dados, as bibliotecas abaixo foram importadas:
 
-```
+```python
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
