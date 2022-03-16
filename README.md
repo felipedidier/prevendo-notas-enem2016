@@ -43,12 +43,12 @@ A documentação desse projeto acompanhou os passos de um projeto em Data Scienc
 
 1. Aquisição de Dados
 2. Preparação de Dados e Análise Exploratória
-4. Feature Engineering
-5. Modelagem
-6. Avaliação
-7. Deploy
+3. Feature Engineering
+4. Modelagem
+5. Avaliação
+6. Deploy
 
-### Aquisição de dados
+### 1. Aquisição de dados
 
 Como dito [anteriormente](#dataset), os dados foram coletados do dataset do Desafio de Resultados do ENEM 2016. Para coletar os dados do arquivo .CSV foi utilizada a biblioteca pandas, que estrutura os dados de forma tabular em linhas e colunas, DataFrame.
 
@@ -60,7 +60,7 @@ import pandas as pd
 df = pd.read_csv('https://raw.githubusercontent.com/felipedidier/prevendo-notas-enem2016/master/train.csv',encoding='utf-8-sig')
 ```
 
-### Preparação dos Dados e Análise Exploratória
+### 2. Preparação dos Dados e Análise Exploratória
 
 #### Shape do DataFrame
 Inicialmente verificou-se a presença de 13730 linhas e 167 colunas utilizando ```df.shape```.
@@ -100,7 +100,8 @@ Como não há justificativa para os valores nulos na coluna ```TP_ESTADO_CIVIL``
 df = df[df['TP_ESTADO_CIVIL'].isna()==False]
 ```
 
-Após essa preparação dos dados, o DataFrame apresenta 9781 linhas e 56 colunas.
+Após esse processo, a coluna ```TP_PRESENCA_MT``` não é mais necessária, portanto foi utilizado o método ```.drop()``` para retirá-la do dataframe.
+Após essa preparação dos dados, o DataFrame apresenta 9781 linhas e 55 colunas.
 
 #### Análise das colunas de PcD
 
@@ -112,7 +113,7 @@ IN = ['IN_BAIXA_VISAO', 'IN_CEGUEIRA', 'IN_SURDEZ', 'IN_DEFICIENCIA_AUDITIVA', '
 df.drop(columns=IN, inplace=True)
 ```
 
-Após essa preparação dos dados, o DataFrame apresenta 9781 linhas e 43 colunas.
+Após essa preparação dos dados, o DataFrame apresenta 9781 linhas e 42 colunas.
 
 #### Visualização dos dados
 
@@ -125,7 +126,7 @@ import seaborn as sns
 sns.set_style(style='darkgrid')
 ```
 
-Como era necessário visualizar o histograma de 43 variáveis, foi utilizado o método de ```.subplots()```.
+Como era necessário visualizar o histograma de 42 variáveis, foi utilizado o método de ```.subplots()```.
 
 ```python
 fig, axes = plt.subplots(nrows = 12, ncols = 5)
@@ -158,7 +159,7 @@ df2['NU_IDADE'].value_counts().index.sort_values()[0] # 33
 
 Devido a participação dos dados (5,8%), os outliers não foram removidos por representar um valor já significante dos dados.
 
-### Feature Engineering
+### 3. Feature Engineering
 
 #### Treino e Teste
 
@@ -171,10 +172,10 @@ X_test, y_test = test.drop(columns="NU_NOTA_MT"), test["NU_NOTA_MT"]
 ```
 As grandezas de cada DataFrame:
 ```
-X_train: (7853, 43)
-y_train: (7853,)
-X_test: (1964, 43)
-y_test: (1964,)
+X_train: (7824, 41)
+y_train: (7824,)
+X_test: (1957, 41)
+y_test: (1957,)
 ```
 
 Diante da necessidade de manipulação, limpeza e visualização de dados, as bibliotecas abaixo foram importadas:
