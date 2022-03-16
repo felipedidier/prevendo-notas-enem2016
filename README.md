@@ -454,19 +454,85 @@ plt.show()
 
 ### 5. Pipeline
 
-Pipeline é uma série de etapas padronizadas 
+Pipeline é uma série de etapas padronizadas que organiza o processo de transformação e modelagem doi projeto. As bibliotecas utilizadas seguem abaixo:
 
-from sklearn.compose import ColumnTransformer, TransformedTargetRegressor
+```python
+## Bibliotecas utilizadas
 from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer, TransformedTargetRegressor
 
 import pickle as pk
 ```
 
+Novamente realiza-se a separação em treino e test. ```df_new``` foi uma cópia realizada do ```df``` antes das transformações de features.
 
+```python
+train, test = train_test_split(df_new, test_size=0.2, random_state=42)
+X_train, y_train = train.drop(columns='NU_NOTA_MT'), train[target]
+X_test, y_test = test.drop(columns='NU_NOTA_MT'), test[target]
+```
 
+Os métodos de transformação de features são importados, assim como as próprias features.
 
+```python
+z_score = StandardScaler()
+oe = OrdinalEncoder()
+one_hot = OneHotEncoder()
+```
 
+```
+feat_num = ['NU_IDADE', 'NU_NOTA_CN', 'NU_NOTA_CH', 'NU_NOTA_LC']
+feat_cat1 = ['TP_SEXO', 'Q006', 'Q007', 'Q008', 'Q009', 'Q010', 'Q011', 'Q012', 'Q013', 'Q014', 'Q015', 'Q016', 'Q017', 'Q018', 'Q019', 'Q020', 'Q021', 'Q022', 'Q023', 'Q024', 'Q025', 'Q026', 'Q042', 'Q043', 'Q045', 'Q047', 'Q048', 'IN']
+feat_cat2 = ['SG_UF_RESIDENCIA', 'TP_ESTADO_CIVIL', 'TP_COR_RACA', 'TP_NACIONALIDADE', 'TP_ST_CONCLUSAO']
+```
 
+Com o auxilio de ```ColumTransformer```, é construído o preprocessamento e transformado em DataFrame.
 
+```python
+preprocess = ColumnTransformer(
+                    [   
+                        ('StdTransf', z_score, feat_num),
+                        ('Ordinal', oe, feat_cat1),
+                        ('OneHot', one_hot, feat_cat2),
+                        
+                    ], remainder='passthrough')
+
+dt_tf = preprocess.fit_transform(X_train, y_train)
+pd.DataFrame(data = dt_tf)
+```
+
+Utilizando do ```TransformedTargetRegressor```, é construído o modelo de Machine Learning selecionado, o Random Forest Regressor.
+
+```python
+model = TransformedTargetRegressor(regressor=RandomForestRegressor(n_estimators=250, bootstrap=True, criterion='mse', max_depth=8, max_features='auto', random_state=42), transformer = z_score)
+```
+
+Possuindo o preprocessamento e o modelo definidos, constroi-se o Pipeline.
+
+```python
+pipe = Pipeline([("pre", preprocess), ("tree", model)])
+pipe.fit(X_train, y_train)
+```
+
+Com o Pipeline rodado, agora pode-se testar se os resultados ficam próximos aos resultados obtidos na etapa 05.
+
+```python
+pred_value = pipe.predict(X_test)
+
+rmse_dt = mean_squared_error(y_test, pred_value) ** (1/2)
+
+print("Test set RMSE of dt: {:.3f}".format(rmse_dt)) # 73.2
+print(f"Test set R2 of dt {r2_score(y_test, pred_value):.3f}") # 0.466
+```
+
+#### Oportunidade para Deploy
+
+Com o Pipeline construído é possível gerar um arquivo pickle para implementações de Deploy.
+
+```python
+pk.dump(pipe, open('model_rfr.pkl', 'wb'))
+```
+
+### Conclusão
 
 
