@@ -45,8 +45,7 @@ A documentação desse projeto acompanhou os passos de um projeto em Data Scienc
 2. Preparação de Dados e Análise Exploratória
 3. Feature Engineering
 4. Modelagem
-5. Avaliação
-6. Deploy
+5. Pipeline
 
 ### 1. Aquisição de dados
 
@@ -333,5 +332,141 @@ sns.barplot(scores['index'], scores.score,  order=scores['index'], color='lightg
 plt.xticks(rotation=90)
 plt.show()
 ``` 
+
+![feat_score](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/feature_score.png?raw=true)
+
+A partir dos scores obtidos, é utilizado o P-value, que é interpretado no contexto como o nível de significância pré-escolhido, comumente definido por 5% (0,05). Também pode ser considerado como um nível de confiança de 95%. O P-value ajudará a definir quantas features serão escolhidas.
+
+```python
+scores_select = scores[scores['index'].isin(np.where(fs.pvalues_>0.05)[0])]
+score_qttd = scores_select.shape[0]
+print(f"Foram selecionadas {score_qttd} features de {train.shape[1]}.")
+```
+
+O resultado printado foi ```Foram selecionadas 38 features de 83.```. Com essa informação, realiza-se novamente o processo definindo a quantidade de 38 features (armazenado na variável ```score_qttd```).
+
+```python
+fs = SelectKBest(score_func=f_classif, k=score_qttd)
+fs.fit(df_features,df_target)
+cols = fs.get_support(indices=True)
+df_features_new = df_features.iloc[:,cols]
+train_fs = pd.DataFrame(fs.transform(df_features))
+
+select_columns = []
+for col in df_features_new.columns:
+  select_columns.append(col)
+
+train = train[select_columns]
+
+feat_final = []
+for col in train.columns:
+  feat_final.append(col)
+
+test = test[feat_final]
+```
+
+### 4. Modelagem
+
+Selecionadas todas as features que serão utilizadas no modelo de previsão, partirmos para a etapa mais importante do projeto, onde serão definidos os modelos de Machine Learning para previsão das notas de matemática do ENEM 2016.
+
+Primeiramente, algumas bibliotecas necessitam ser importadas:
+
+```python
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import r2_score, mean_squared_error, accuracy_score
+```
+
+Para previsão do modelo foi utilizado Random Forest Regression (FRF), que possui uma abordagem mais precisa e robusta para mudanças nas features quando comparada com uma única árvore de regressão. A Random Forest utiliza de um conjunto de árvores de decisão aleatórias a fim de minimizar o overfitting de cada modelo individual.
+
+```python
+rfr = RandomForestRegressor()
+```
+
+Para se ter o melhor ajuste dos hiperparâmetros da RFR, foi utilizado o método de seleção ```GridSearchCV```, que recebe de entrada alguns valores de hiperparâmetros e roda vários modelos de RFR para encontrar qual possui a melhor performance. Dependendo da quantidade de registros no código, essa etapa pode ser um pouco demorada.
+
+```python
+parameters = {
+    "n_estimators":[10, 50, 100, 250],
+    "max_depth":[8, 10, 12]
+}
+
+cv = GridSearchCV(rfr,parameters,cv=5)
+
+cv.fit(train.drop(columns='NU_NOTA_MT'),y_train.values.ravel())
+```
+
+Após executado, é possível conferir a performance de cada modelo.
+
+```python
+def display(results):
+    print(f'Best parameters are: {results.best_params_}')
+    print("\n")
+    mean_score = results.cv_results_['mean_test_score']
+    std_score = results.cv_results_['std_test_score']
+    params = results.cv_results_['params']
+    for mean,std,params in zip(mean_score,std_score,params):
+        print(f'{round(mean,3)} + or -{round(std,3)} for the {params}')
+
+display(cv)
+```
+
+Onde o é expresso por:
+
+```
+Best parameters are: {'max_depth': 8, 'n_estimators': 250}
+
+
+0.442 + or -0.006 for the {'max_depth': 8, 'n_estimators': 10}
+0.453 + or -0.01 for the {'max_depth': 8, 'n_estimators': 50}
+0.456 + or -0.009 for the {'max_depth': 8, 'n_estimators': 100}
+0.456 + or -0.009 for the {'max_depth': 8, 'n_estimators': 250}
+0.422 + or -0.014 for the {'max_depth': 12, 'n_estimators': 10}
+0.449 + or -0.011 for the {'max_depth': 12, 'n_estimators': 50}
+0.453 + or -0.01 for the {'max_depth': 12, 'n_estimators': 100}
+0.455 + or -0.009 for the {'max_depth': 12, 'n_estimators': 250}
+0.411 + or -0.016 for the {'max_depth': 16, 'n_estimators': 10}
+0.441 + or -0.01 for the {'max_depth': 16, 'n_estimators': 50}
+0.447 + or -0.012 for the {'max_depth': 16, 'n_estimators': 100}
+0.45 + or -0.011 for the {'max_depth': 16, 'n_estimators': 250}
+0.399 + or -0.005 for the {'max_depth': None, 'n_estimators': 10}
+0.435 + or -0.011 for the {'max_depth': None, 'n_estimators': 50}
+0.439 + or -0.012 for the {'max_depth': None, 'n_estimators': 100}
+0.444 + or -0.011 for the {'max_depth': None, 'n_estimators': 250}
+```
+
+Definido o modelo com os hiperparâmetros de melhor performance, realiza-se a previsão com a base ```test```.
+
+```python
+y_pred = cv.predict(test.drop(columns='NU_NOTA_MT'))
+```
+
+Para mensurar o resultado obtido, calcula-se o RMSE (erro médio quadrado). Quanto mais próximo de zero, melhor o resultado obtido.
+
+```python
+rmse_test = mean_squared_error(y_test, y_pred)**(1/2)
+print(rmse_test) # 73.66
+```
+
+Para visualizar a comparação do valor previsto com o valor real, utilizou um gráfico scatter.
+
+```python
+sns.scatterplot(x=y_test, y=y_pred)
+plt.show()
+```
+
+
+from sklearn.compose import ColumnTransformer, TransformedTargetRegressor
+from sklearn.pipeline import Pipeline
+
+import pickle as pk
+```
+
+
+
+
+
+
+
 
 
