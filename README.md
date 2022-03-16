@@ -5,7 +5,7 @@ Projeto final do curso de Data Science da [Awari](https://awari.com.br/). O obje
 
 Será criado um modelo de **previsão da nota da prova matemática de quem participou do ENEM 2016 :books:**.
 
-> teste
+> Você pode acessar o código [clicando aqui](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/Prevendo_notas_ENEM.ipynb).
 
 ## Tópicos
 
