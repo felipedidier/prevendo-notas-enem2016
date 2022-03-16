@@ -271,11 +271,19 @@ train: (7824, 83)
 test: (1957, 83)
 ```
 
-Após a transformação 
+Após as transformações é possível visualizar a correlação entre todas as features envolvidas.
 
 ```python
 plt.figure(figsize=(20,20))
 sns.heatmap(train.corr())
 ```
 
-![]()
+![heatmap2](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/heatmap_pos.png?raw=true)
+
+Em uma rápida análise, consegue-se perceber que há correlações interessantes sendo formadas entre ```NU_NOTA_MT``` e algumas features, como por exemplo ```Q006```, ```Q014```, ```Q047```, entre outras.
+
+De uma forma alternativa, consegue-se visualizar a partir do gráfico abaixo as features que apresentam maior correlação com ```NU_NOTA_MT``` em ordem decrescente.
+
+![grafic1]()
+
+
