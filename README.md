@@ -170,7 +170,14 @@ sns.heatmap(df.corr())
 
 #### Treino e Teste
 
-É realizada a separação dos dados em treino e teste. Foi escolhida a proporção de 80/20, onde 80% da base será treino e 20% será teste.
+É realizada a separação dos dados em treino e teste. Para isso, importa-se a seguinte biblioteca:
+
+```python
+## Bibliotecas utilizadas
+from sklearn.model_selection import train_test_split
+```
+
+Para a quebra do dataframe em treino e teste foi escolhida a proporção de 80/20, onde 80% da base será treino e 20% será teste.
 
 ```python
 train, test = train_test_split(df, test_size=0.2, random_state=42)
@@ -200,6 +207,7 @@ feat_cat2 = ['SG_UF_RESIDENCIA', 'TP_ESTADO_CIVIL', 'TP_COR_RACA', 'TP_NACIONALI
 Para esse momento, serão utilizados alguns métodos da biblioteca sklearn e category_encoders.
 
 ```python
+## Bibliotecas utilizadas
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from category_encoders import OrdinalEncoder 
 ```
@@ -284,6 +292,46 @@ Em uma rápida análise, consegue-se perceber que há correlações interessante
 
 De uma forma alternativa, consegue-se visualizar a partir do gráfico abaixo as features que apresentam maior correlação com ```NU_NOTA_MT``` em ordem decrescente.
 
-![grafic1]()
+```python
+train.corr()['NU_NOTA_MT'].sort_values(ascending=False).head(30).plot(kind='bar')
+```
+![grafic1](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/grafic1.png?raw=true)
+
+#### Selecionando as melhores features
+
+A seleção de features será realizada com o Select K Bests utilizando o f_classif, que se baseia na análise de variância com F-Tests.
+
+```python
+## Bibliotecas utilizadas
+from sklearn.feature_selection import SelectKBest, f_classif
+```
+
+O primeiro passo é saber qual o score de cada feature para poder definir quantas features serão selecionadas. Para facilitar o processo, o ```train```é dividido em ```df_features``` e ```df_target```.
+
+```python
+df_features = train.drop(columns='NU_NOTA_MT')
+df_target = train['NU_NOTA_MT']
+```
+Todas as features são selecionadas para obter o score de cada uma.
+
+```python
+fs = SelectKBest(score_func=f_classif, k='all')
+fs.fit(df_features,df_target)
+
+scores = pd.DataFrame(data=fs.scores_, columns=['score'])
+scores.sort_values(by='score', ascending=False, inplace=True).reset_index(inplace=True)
+scores = scores.sort_values(by='index')
+scores['FEATURE'] = train.drop(columns='NU_NOTA_MT').columns
+scores.sort_values(by='score', ascending=False, inplace=True)
+```
+
+Visualizando o resultado em gráfico para cada feature:
+
+```python
+plt.figure(figsize=(30,5))
+sns.barplot(scores['index'], scores.score,  order=scores['index'], color='lightgreen')
+plt.xticks(rotation=90)
+plt.show()
+``` 
 
 
