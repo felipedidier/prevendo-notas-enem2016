@@ -135,7 +135,13 @@ for i, col in enumerate(selected_feat_eda):
   sns.histplot(df[col], ax = axes[i//5,i%5], bins= 10, stat='density', kde=True)
 ```
 
-![histograma](https://iharsh234.github.io/WebApp/images/demo/demo_landing.JPG)
+![histograma](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/histograma.png?raw=true)
+
+Nota-se a presença de muitas variáveis categóricas no dataset. Analisando os gráficos, chama a atenção a distribuição assimétrica da feature ```NU_IDADE``` que representa a idade dos participantes. Para esse caso em específico, é realizada uma análise mais aprofundada utilizando boxplot.
+
+```python
+sns.boxplot(df['NU_IDADE'])
+```
 
 Diante da necessidade de manipulação, limpeza e visualização de dados, as bibliotecas abaixo foram importadas:
 
