@@ -43,7 +43,7 @@ A documentação desse projeto acompanhou os passos de um projeto em Data Scienc
 
 1. Aquisição de Dados
 2. Preparação de Dados e Análise Exploratória
-3. Feature Engineering
+3. [Feature Engineering](#feature engineering)
 4. Modelagem
 5. Pipeline
 
