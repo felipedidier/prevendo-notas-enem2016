@@ -414,25 +414,21 @@ display(cv)
 Onde o é expresso por:
 
 ```
-Best parameters are: {'max_depth': 8, 'n_estimators': 250}
+Best parameters are: {'max_depth': 8, 'n_estimators': 100}
 
 
-0.442 + or -0.006 for the {'max_depth': 8, 'n_estimators': 10}
-0.453 + or -0.01 for the {'max_depth': 8, 'n_estimators': 50}
-0.456 + or -0.009 for the {'max_depth': 8, 'n_estimators': 100}
-0.456 + or -0.009 for the {'max_depth': 8, 'n_estimators': 250}
-0.422 + or -0.014 for the {'max_depth': 12, 'n_estimators': 10}
-0.449 + or -0.011 for the {'max_depth': 12, 'n_estimators': 50}
-0.453 + or -0.01 for the {'max_depth': 12, 'n_estimators': 100}
-0.455 + or -0.009 for the {'max_depth': 12, 'n_estimators': 250}
-0.411 + or -0.016 for the {'max_depth': 16, 'n_estimators': 10}
-0.441 + or -0.01 for the {'max_depth': 16, 'n_estimators': 50}
-0.447 + or -0.012 for the {'max_depth': 16, 'n_estimators': 100}
-0.45 + or -0.011 for the {'max_depth': 16, 'n_estimators': 250}
-0.399 + or -0.005 for the {'max_depth': None, 'n_estimators': 10}
-0.435 + or -0.011 for the {'max_depth': None, 'n_estimators': 50}
-0.439 + or -0.012 for the {'max_depth': None, 'n_estimators': 100}
-0.444 + or -0.011 for the {'max_depth': None, 'n_estimators': 250}
+0.451 + or -0.035 for the {'max_depth': 8, 'n_estimators': 10}
+0.464 + or -0.031 for the {'max_depth': 8, 'n_estimators': 50}
+0.465 + or -0.031 for the {'max_depth': 8, 'n_estimators': 100}
+0.464 + or -0.032 for the {'max_depth': 8, 'n_estimators': 250}
+0.443 + or -0.037 for the {'max_depth': 10, 'n_estimators': 10}
+0.459 + or -0.033 for the {'max_depth': 10, 'n_estimators': 50}
+0.46 + or -0.032 for the {'max_depth': 10, 'n_estimators': 100}
+0.462 + or -0.032 for the {'max_depth': 10, 'n_estimators': 250}
+0.429 + or -0.031 for the {'max_depth': 12, 'n_estimators': 10}
+0.455 + or -0.033 for the {'max_depth': 12, 'n_estimators': 50}
+0.459 + or -0.032 for the {'max_depth': 12, 'n_estimators': 100}
+0.46 + or -0.032 for the {'max_depth': 12, 'n_estimators': 250}
 ```
 
 Definido o modelo com os hiperparâmetros de melhor performance, realiza-se a previsão com a base ```test```.
@@ -445,7 +441,7 @@ Para mensurar o resultado obtido, calcula-se o RMSE (erro médio quadrado). Quan
 
 ```python
 rmse_test = mean_squared_error(y_test, y_pred)**(1/2)
-print(rmse_test) # 73.66
+print(rmse_test) # 73.26
 ```
 
 Para visualizar a comparação do valor previsto com o valor real, utilizou um gráfico scatter.
@@ -454,7 +450,11 @@ Para visualizar a comparação do valor previsto com o valor real, utilizou um g
 sns.scatterplot(x=y_test, y=y_pred)
 plt.show()
 ```
+![model_prevreal](https://github.com/felipedidier/prevendo-notas-enem2016/blob/master/images/model_prevreal.png?raw=true)
 
+### 5. Pipeline
+
+Pipeline é uma série de etapas padronizadas 
 
 from sklearn.compose import ColumnTransformer, TransformedTargetRegressor
 from sklearn.pipeline import Pipeline
