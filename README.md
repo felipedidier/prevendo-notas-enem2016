@@ -11,10 +11,10 @@ Será criado um modelo de **previsão da nota da prova matemática de quem parti
 
 
 * [Ambiente](#ambiente)
-- Dataset
-- Problemática
-- Descrição
-- Conclusão
+* [Dataset](#dataset)
+* [Problemática](#problematica)
+* [Descrição](#descricao)
+* [Conclusão](#conclusao)
 
 
 ## Ambiente
