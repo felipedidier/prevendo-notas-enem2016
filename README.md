@@ -533,6 +533,6 @@ Com o Pipeline construído é possível gerar um arquivo pickle para implementa�
 pk.dump(pipe, open('model_rfr.pkl', 'wb'))
 ```
 
-### Conclusão
+## Conclusão
 
-
+Percebe-se que as características socioeconômicas dos participantes, que são definidas principalmente pelas features de Q006 à Q047, possuem considerável influência nos resultados da prova de matemática, o que deixa claro que alunos com menos acesso à educação, renda familiar mais baixa, dificuldade de acesso à internet e computadores necessitam de maior atenção e investimento por parte dos órgãos público para que tenhamos um modelo de ensino mais acessível e democrático.
